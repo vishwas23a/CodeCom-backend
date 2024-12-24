@@ -9,8 +9,10 @@ dotenv.config();
 const port = process.env.PORT
 
 const corsOptions = {
-    origin: 'http://localhost:5173',  // Replace with your frontend URL
+    origin: 'https://codecom01.netlify.app',  // Replace with your frontend URL
     credentials: true,  // Allow cookies to be sent
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
   };
 const app = express();
 app.use(cookieParser())
