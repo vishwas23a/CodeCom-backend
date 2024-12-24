@@ -43,7 +43,7 @@ export const userProfile=async(req,res)=>{
     try {
         const decoded= jwt.verify(token,process.env.JWT_SECRET_KEY)
         const userId=decoded.userId;
-        const user=await User.findById(userId)
+        const user=await User.findById(userId)  
         if(!user){
             res.status(400).json("user not found");
         }
