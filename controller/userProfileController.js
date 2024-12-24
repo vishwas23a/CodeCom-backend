@@ -37,7 +37,7 @@ export const userProfile=async(req,res)=>{
     const token =req.cookies.authToken;
 
     if(!token){
-        console.log("token is invalid");
+        console.log("token is invalid ");
         
     }
     try {
