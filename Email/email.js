@@ -1,5 +1,5 @@
 import { PASSWORD_RESET_REQUEST_TEMPLATE, PASSWORD_RESET_SUCCESS_TEMPLATE, VERIFICATION_EMAIL_TEMPLATE } from "./mailTemplate.js";
-import { mailtrapClient } from "./mail.js";
+
 import { sendEmail } from "./mail.js";
 
 
