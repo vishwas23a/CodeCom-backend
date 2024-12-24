@@ -1,42 +1,29 @@
 import { PASSWORD_RESET_REQUEST_TEMPLATE, PASSWORD_RESET_SUCCESS_TEMPLATE, VERIFICATION_EMAIL_TEMPLATE } from "./mailTemplate.js";
 import { mailtrapClient } from "./mail.js";
-import { sender } from "./mail.js";
+import { sendEmail } from "./mail.js";
 
-export const sendVerificationEmail = async (email, verificationToken) => {
-    const recipient = [{ email }];
+
+  export const sendVerificationEmail = async (email, verificationToken) => {
     try {
-      const response = await mailtrapClient.send({
-        from: sender,
-        to: recipient,
-        subject: "Verif Your Email",
-        html: VERIFICATION_EMAIL_TEMPLATE.replace(
-          "{verificationCode}",
-          verificationToken
-        ),
-        category: " Email Verification",
-      });
-      console.log("send successfully", response);
+      const htmlContent = VERIFICATION_EMAIL_TEMPLATE.replace(
+        "{verificationCode}",
+        verificationToken
+      );
+      await sendEmail(email, "Verify Your Email", htmlContent);
+      console.log("Verification email sent successfully");
     } catch (error) {
-      console.log("Error sending verification", error);
-      throw new Error(`Error sending verification Email :${error}`);
+      console.log("Error sending verification email", error);
+      throw new Error(`Error sending verification email: ${error}`);
     }
   };
   export const sendWelcomeEmail = async (name, email) => {
-    const recipient = [{ email }];
+    const htmlContent = `<h1>Welcome ${name}!</h1><p>Thanks for joining CodCom!</p>`;
     try {
-      const response = await mailtrapClient.send({
-        from: sender,
-        to: recipient,
-        template_uuid: "3c7af0d7-ec65-421f-b67e-fbfed28fa25f",
-        template_variables: {
-          name: name,
-          company_info_name: "CodCom",
-        },
-      });
-      console.log("welcome email successfully", response);
+      await sendEmail(email, "Welcome to CodCom", htmlContent);
+      console.log("Welcome email sent successfully");
     } catch (error) {
-      console.log("error sending welcome mail", error);
-      throw new Error(`Error sending welcome email :${error}`);
+      console.log("Error sending welcome email", error);
+      throw new Error(`Error sending welcome email: ${error}`);
     }
   };
   export const sendResetPasswordEmail =async(email,URL)=>{
