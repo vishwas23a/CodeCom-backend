@@ -1,7 +1,7 @@
 import express from 'express';
 import { checkAuth, forgotPassword, login, logout, resetPassword, signup, verifyEmail } from '../controller/codeAuthController.js';
 import { verifyToken } from '../middleware/verifyToken.js';
-import { userProfile } from '../controller/userProfileController.js';
+
 
 
 const router= express.Router();
