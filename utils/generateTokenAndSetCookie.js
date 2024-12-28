@@ -7,7 +7,8 @@ export const generateTokenAndSetCookie=async(res,userId)=>{
 res.cookie("authToken",token,{
 
     httpOnly:true,
-    secure:process.env.NODE_ENV==='production'||process.env.NODE_ENV==='development',   
+    secure:process.env.NODE_ENV==='production'
+    ||process.env.NODE_ENV==='development',   
     sameSite:"none",
     maxAge: 7*24*60*60*1000
 })
