@@ -15,11 +15,13 @@ import { User } from "../models/userModel.js";
             admin:req.userId,
             members:[req.userId]
         })
-       await community.save()
-       console.log(community,"community created successfully");
+       
+    
        const user=await User.findById(req.userId)
        user.createdCommunities.push(community._id)
+       
        await user.save()
+       await community.save()
         res.status(201).json( {success:true,message:"Commuunity created successfully",community})
     } catch (error) {
         console.log(error,"failed to create community");
@@ -74,6 +76,34 @@ console.log(community,"community joined successfully");
     }
 
 }
-export const getCommunity=async(req,res)=>{
+export const getJoinedCommunity=async(req,res)=>{
+    try {
+        const joinedCommunity= await Community.find({members:req.userId}).select('name code admin ').populate('admin','name')
+console.log(joinedCommunity);
 
+        res.status(200).json(joinedCommunity)
+
+
+
+    } catch (error) {
+        console.log(error,"failed to get the joined community");
+        res.status(400).json({success:false,message:"Failed to get the joined community"})
+        
+    }
+
+}
+export const getCreatedCommunity=async(req,res)=>{
+    try {
+        const createdCommunity= await Community.find({admin:req.userId}).select('name code admin description ').populate('admin','name email')
+console.log(createdCommunity);
+
+        res.status(200).json(createdCommunity)
+
+
+}
+catch(error){
+    console.log(error,"failed to get the created community");
+    res.status(400).json({success:false,message:"Failed to get the created community"})
+    
+}
 }
