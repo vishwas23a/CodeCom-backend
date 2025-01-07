@@ -107,3 +107,17 @@ catch(error){
     
 }
 }
+export const fetchCommunity=async(req,res)=>{
+    const {name}=req.params;
+    try {
+        const community= await Community.findOne({name}).select('admin name code description members').populate('admin','name email').populate('members','name email')
+            if(!community){
+                return res.status(400).json({success:false,message:"Community not found"})
+            }
+            res.status(200).json(community)
+
+    } catch (error) {
+        console.log(error,"failed to fetch community");
+        res.status(400).json({success:false,message:"Failed to fetch community"})
+    }
+}
