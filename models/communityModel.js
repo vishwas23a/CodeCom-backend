@@ -26,6 +26,15 @@ const communitySchema = mongoose.Schema(
         ref: "User",
       },
     ],
+    messages: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        message: String
+      }
+    ],
   },
   { timestamps: true }
 );

@@ -29,8 +29,6 @@ res.status(200).json(user+" data updated successfully")
         res.status(400).json("update  failed")
         
     }
-
-
 }
 
 export const userProfile=async(req,res)=>{
