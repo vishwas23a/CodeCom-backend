@@ -125,9 +125,10 @@ export const fetchCommunity = async (req, res) => {
 
 export const getMessages = async (req,res) => {
     const { name } = req.params;
-    socket.join(name);
+
     try {
-        const community = await Community.findOne({ name }).select('admin name code description members').populate('members', 'name email').populate('admin', 'name email')
+        const community = await Community.findOne({ name }).select("messages").populate("messages.user", "name email");
+
         if (!community) {
             return res.status(400).json({ success: false, message: "Community not found" })
         }
@@ -141,7 +142,7 @@ export const getMessages = async (req,res) => {
 }
 
 export const sendMessages = async (req,res) => {
-    const { code } = req.body;
+    const { code,message } = req.body;
 
     try {
         if (!req.userId) {
@@ -157,8 +158,10 @@ export const sendMessages = async (req,res) => {
 
         }
 
-        community.messages.push({user,message})
+        const newMessage = { user: req.userId, message };
+        community.messages.push(newMessage);
         await community.save();
+        io.to(code).emit("recieveMessage", { user:req.userId, message });
 
         res.status(200).json({ success: true, message: "Message sent" })
 

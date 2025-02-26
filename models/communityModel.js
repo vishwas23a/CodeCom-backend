@@ -32,7 +32,9 @@ const communitySchema = mongoose.Schema(
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-        message: String
+        message: String,
+        createdAt: { type: Date, default: Date.now }
+
       }
     ],
   },

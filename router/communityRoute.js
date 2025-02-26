@@ -10,6 +10,6 @@ router.post('/joinCommunity',verifyToken, joinCommunity)
 router.get('/getJoinedCommunity',verifyToken,getJoinedCommunity)
 router.get('/getCreatedCommunity',verifyToken,getCreatedCommunity)
 router.get('/:name',verifyToken,fetchCommunity)
-router.get('/getMessages',getMessages)
-router.post('/sendMessages',sendMessages)
+router.get('/getMessages/:name',verifyToken,getMessages)
+router.post('/sendMessages',verifyToken,sendMessages)
 export default router;
