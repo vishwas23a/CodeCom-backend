@@ -1,5 +1,6 @@
 import Community from "../models/communityModel.js";
 import { User } from "../models/userModel.js";
+import io from "../index.js"
 
 export const createCommunity = async (req, res) => {
     const { name, code, description } = req.body;
@@ -120,4 +121,50 @@ export const fetchCommunity = async (req, res) => {
         console.log(error, "failed to fetch community");
         res.status(400).json({ success: false, message: "Failed to fetch community" })
     }
+}
+
+export const getMessages = async (req,res) => {
+    const { name } = req.params;
+    socket.join(name);
+    try {
+        const community = await Community.findOne({ name }).select('admin name code description members').populate('members', 'name email').populate('admin', 'name email')
+        if (!community) {
+            return res.status(400).json({ success: false, message: "Community not found" })
+        }
+        res.status(200).json({ community, currentUserId: req.userId })
+
+    } catch (error) {
+        console.log(error, "failed to fetch community");
+        res.status(400).json({ success: false, message: "Failed to fetch community" })
+    }
+
+}
+
+export const sendMessages = async (req,res) => {
+    const { code } = req.body;
+
+    try {
+        if (!req.userId) {
+            console.log("user not found");
+
+            return res.status(400).json({ success: false, message: "User not found" })
+        }
+        const community = await Community.findOne({ code })
+        if (!community) {
+            console.log("community not found");
+            return res.status(400).json({ success: false, message: "Community not Found" })
+
+
+        }
+
+        community.messages.push({user,message})
+        await community.save();
+
+        res.status(200).json({ success: true, message: "Message sent" })
+
+
+    } catch (error) {
+        res.status(400).json({ success: false, message: "Failed to send" })
+    }
+
 }
