@@ -21,11 +21,7 @@ const corsOptions = {
 const app = express();
 const server = createServer(app);
 const io = new Server(server,{
-  cors: {
-    origin: 'http://localhost:5173', 
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  }
+  cors: corsOptions
 });
 app.use(cookieParser())
 app.use(cors(corsOptions))
@@ -38,7 +34,6 @@ app.use('/api/user',userRoute)
 app.use('/api/community',communityRoute)
 
 
-const onlineUsers = new Map();
 io.on('connection', (socket) => {
   console.log('a user connected');
 
