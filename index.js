@@ -65,7 +65,6 @@ io.on('connection', (socket) => {
 
   socket.on("sendCode", async ({ code, newCode }) => {
     try {
-      console.log(newCode)
       io.to(code).emit("receiveCode", {newCode});
     } catch (error) {
       console.error("Error handling sendMessage:", error);
